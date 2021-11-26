@@ -72,7 +72,7 @@ def game():
     global money
 
     # level up when there is enough xp to level up.
-    if currentXP == currentLVL * 100:
+    if currentXP >= currentLVL * 100:
         currentXP -= currentLVL * 100
         currentLVL += 1
         maxHP = 10 + currentLVL
