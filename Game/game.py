@@ -10,6 +10,7 @@ maxHP = save.maxHP
 currentHP = save.currentHP
 currentXP = save.currentXP
 currentLVL = save.currentLVL
+money = save.money
 
 def reset():
     global currentHP
@@ -68,6 +69,7 @@ def game():
     global maxHP
     global currentXP
     global currentLVL
+    global money
 
     # level up when there is enough xp to level up.
     if currentXP == currentLVL * 100:
@@ -77,21 +79,29 @@ def game():
         print("LEVEL UP!!!")
 
     if currentHP > 0:
-        print('..................................................\nHP = ' + str(currentHP) + '\nLVL = ' + str(currentLVL) + '\nXP = ' +  str(currentXP))
-        action = input('If you want to fight, Press f\nIf you want to heal, Press h\nIf you want to stop playing, Press e\nIf you want to save, Press s\n')
+        print('..................................................\nHP = ' + str(currentHP) + '\nmoney = ' + str(money) + '\nLVL = ' + str(currentLVL) + '\nXP = ' +  str(currentXP))
+        action = input('If you want to fight, Press f\nIf you want to heal ($15), Press h\nIf you want to stop playing, Press e\nIf you want to save, Press s\n')
         if action == 'f':
             enemy = input('What enemy do you want to fight?\n[1] Goblin\n[2] Skeleton\n[3] Witch\n')
             if enemy == '1':
                 enemy1()
-                currentXP += 100
+                currentXP += random.randint(10, 100)
+                money += random.randint(5,20)
             if enemy == '2':
                 enemy2()
-                currentXP += 1000
+                currentXP += random.randint(100, 1000)
+                money += random.randint(50,200)
             if enemy == '3':
                 enemy3()
-                currentXP += 10000
+                currentXP += random.randint(1000, 10000)
+                money += random.randint(500,2000)
         elif action == 'h':
-            currentHP = maxHP
+            if money >= 20:
+                currentHP = maxHP
+                money -= 20
+            else:
+                print('Too low on money, earn some more first.')
+                game()
         elif action == 'e':
             exit()
         elif action == 's':
@@ -100,6 +110,7 @@ def game():
             f.write('currentHP = ' + str(currentHP) + '\n')
             f.write('currentXP = ' + str(currentXP) + '\n')
             f.write('currentLVL = ' + str(currentLVL) + '\n')
+            f.write('money = ' + str(money) + '\n')
             f.close()
         elif action == 'reset':
             reset()
